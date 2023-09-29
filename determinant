@@ -1,0 +1,56 @@
+from itertools import permutations
+
+
+def standard_list(n: int) -> list:
+    ListOfNumber = []
+    for i in range(n):
+        ListOfNumber.append(i)
+    return ListOfNumber
+
+
+def sign(li: list) -> int:
+    cont = 0
+    licoppy = li[:]
+    for i in range(len(licoppy)):
+        if licoppy[i] == i:
+            continue
+        else:
+            dis = abs(i-licoppy.index(i))
+            cont += 2*dis-1
+            index = licoppy.index(i)
+            licoppy[i], licoppy[index] = licoppy[index], licoppy[i]
+    if cont % 2 == 0:
+        return 1
+    else:
+        return -1
+
+
+def is_quared(matrix: list) -> bool:
+    for i in range(len(matrix)):
+        if len(matrix[i]) != len(matrix):
+            raise False
+    return True
+
+
+def factorial(n: int) -> int:
+    a = 1
+    for i in range(n):
+        a = a*(i+1)
+    return a
+
+
+def deter(matrix: list) -> float:
+    per = list(permutations(standard_list(len(matrix))))
+    if is_quared(matrix) is not True:
+        raise 'It is not possible.'
+    a = 0
+    for i in range(len(per)):
+        per1 = list(per[i])
+        for j in range(len(per)):
+            b = 1
+            per2 = list(per[j])
+            for k in range(len(matrix)):
+                b = b * matrix[per1[k]][per2[k]]
+            a = a + sign(per1)*sign(per2)*b
+    result = a / factorial(len(matrix))
+    return result
